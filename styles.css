@@ -1,0 +1,16 @@
+.body {
+    
+}
+
+#gameboard {
+    display: grid;
+    grid-template: repeat(3, 1fr) / repeat(3, 1fr);
+    min-width: 500px;
+    min-height: 500px;
+}
+
+
+#gameboard>div:hover
+{
+    border: 2px solid cadetblue;
+}
