@@ -61,9 +61,9 @@ let gameboard = (() => {
         
         // is board full?
         let isFull = true; 
-        for(i = 0; i < 9 &&Full; i++)
+        for(i = 0; i < 9 && isFull; i++)
         {
-            console.log("full");
+            // console.log("full");
             if(!_spotisOccupied(boardChildren[i]))
                 {isFull = false;}
         }
@@ -75,13 +75,36 @@ let gameboard = (() => {
     const _executeTurn = (e) =>
     {
         if(!_spotisOccupied(e.target))
-            {_addElement(e.target);}
-
-        if(_checkGameCompletion())
         {
-            alert("someone won.")
+            _addElement(e.target);
+            let result = _checkGameCompletion();
+            console.log(result);
+            switch (result)
+            {
+                case _playerOne.symbol : _winAlert(_playerOne);
+
+                case _playerTwo.symbol :
+
+                case null: 
+
+                // case false:
+            }
         }
+
     };
+
+    const _winAlert = (player) =>
+    {
+        console.log(typeof player)
+        if(typeof player == "object")
+        {
+            alert(player.playerName + " won!");
+        }
+        else if(typeof player == null)
+        {
+            alert("Draw!");
+        }
+    }
 
 
     _initializeBoard();
