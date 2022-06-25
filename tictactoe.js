@@ -33,29 +33,42 @@ let gameboard = (() => {
     function _checkGameCompletion() {
         let boardChildren = Array.from(document.querySelectorAll("#gameboard>div"));
 
-        
         for(let i = 0; i < 3; i++)
         {
             // is there three in a row?
-            if(boardChildren[i*3]._spotisOccupied && boardChildren[i*3].textContent == boardChildren[i*3 + 1].textContent == boardChildren[i*3 + 2].textContent )
+            if(_spotisOccupied(boardChildren[3*i]) && boardChildren[i*3].textContent == boardChildren[i*3 + 1].textContent && boardChildren[i*3].textContent == boardChildren[i*3 + 2].textContent)
             {
-                console.log("someone won.")
+                // console.log("row.");
                 return boardChildren[i*3].textContent;
             }
-
+            
             // is there three in a column?
-            if(_spotisOccupied(boardChildren[i]) && boardChildren[i].textContent == boardChildren[i + 3].textContent == boardChildren[i + 6].textContent)
+            if(_spotisOccupied(boardChildren[i]) && boardChildren[i].textContent == boardChildren[i + 3].textContent && boardChildren[i].textContent == boardChildren[i + 6].textContent)
             {
+                // console.log("col.");
                 return boardChildren[i].textContent;
             }
         }
         
-        // if(boardChildren[4].textContent == boardChildren[4].textContent)
-
-
-        return false;
-
+        //diagonal match
+        if(_spotisOccupied(boardChildren[4]) && 
+        ((boardChildren[4].textContent == boardChildren[0].textContent && boardChildren[4].textContent == boardChildren[8].textContent) || 
+        (boardChildren[4].textContent == boardChildren[2].textContent && boardChildren[4].textContent == boardChildren[7].textContent)))
+        {
+            console.log("diag");
+            return boardChildren[4].textContent;
+        }
+        
         // is board full?
+        let isFull = true; 
+        for(i = 0; i < 9 &&Full; i++)
+        {
+            console.log("full");
+            if(!_spotisOccupied(boardChildren[i]))
+                {isFull = false;}
+        }
+
+        return (isFull)? "no one" : false;
     }
 
     //order function for 
