@@ -1,12 +1,12 @@
-let player = ((playerName, symbol) => {
-    return {playerName, symbol};
+let player = ((name, symbol) => {
+    return {name, symbol};
 });
 
 let gameboard = (() => {
     const _board = document.getElementById("gameboard");
-    const _playerOne = player("Jeff", "X")
-    const _playerTwo = player("Snake", "O")
-
+    const _playerOne = player("Jeff", "X");
+    const _playerTwo = player("Snake", "O");
+    let playerOneTurn = true;
     // let array = [];
 
     function _initializeBoard() {
@@ -17,6 +17,8 @@ let gameboard = (() => {
             square.addEventListener("click", _executeTurn);
             _board.appendChild(square);
         }
+        const reset = document.getElementById("reset").addEventListener("click", _resetGame);
+        
 
         // player
     };
@@ -26,7 +28,12 @@ let gameboard = (() => {
     };
     
     const _addElement = (e) => {
-        e.textContent = "X";
+        if(playerOneTurn)
+        {e.textContent = _playerOne.symbol;}
+        else
+        {e.textContent = _playerTwo.symbol;}
+
+        playerOneTurn = !playerOneTurn;
     };
 
     //checks if player won, and returns player that won or null if no winner yet.
@@ -38,14 +45,12 @@ let gameboard = (() => {
             // is there three in a row?
             if(_spotisOccupied(boardChildren[3*i]) && boardChildren[i*3].textContent == boardChildren[i*3 + 1].textContent && boardChildren[i*3].textContent == boardChildren[i*3 + 2].textContent)
             {
-                // console.log("row.");
                 return boardChildren[i*3].textContent;
             }
             
             // is there three in a column?
             if(_spotisOccupied(boardChildren[i]) && boardChildren[i].textContent == boardChildren[i + 3].textContent && boardChildren[i].textContent == boardChildren[i + 6].textContent)
             {
-                // console.log("col.");
                 return boardChildren[i].textContent;
             }
         }
@@ -55,7 +60,6 @@ let gameboard = (() => {
         ((boardChildren[4].textContent == boardChildren[0].textContent && boardChildren[4].textContent == boardChildren[8].textContent) || 
         (boardChildren[4].textContent == boardChildren[2].textContent && boardChildren[4].textContent == boardChildren[7].textContent)))
         {
-            console.log("diag");
             return boardChildren[4].textContent;
         }
         
@@ -63,7 +67,6 @@ let gameboard = (() => {
         let isFull = true; 
         for(i = 0; i < 9 && isFull; i++)
         {
-            // console.log("full");
             if(!_spotisOccupied(boardChildren[i]))
                 {isFull = false;}
         }
@@ -78,27 +81,36 @@ let gameboard = (() => {
         {
             _addElement(e.target);
             let result = _checkGameCompletion();
-            console.log(result);
             switch (result)
             {
                 case _playerOne.symbol : _winAlert(_playerOne);
+                                        break;
 
-                case _playerTwo.symbol :
+                case _playerTwo.symbol : _winAlert(_playerTwo);
+                                        break;
 
-                case null: 
-
-                // case false:
+                case null: _winAlert(null);
             }
         }
 
     };
 
+    const _resetGame = () =>
+    {
+                    console.log("full");
+
+        let boardChildren = Array.from(document.querySelectorAll("#gameboard>div"));
+        for(let square of boardChildren)
+            {square.textContent = "";}
+
+        playerOneTurn = true;
+    }
+
     const _winAlert = (player) =>
     {
-        console.log(typeof player)
         if(typeof player == "object")
         {
-            alert(player.playerName + " won!");
+            alert(player.name + " won!");
         }
         else if(typeof player == null)
         {
@@ -112,8 +124,11 @@ let gameboard = (() => {
     return {};
 })();
 
-
 gameboard;
+const reset = () =>
+{
+
+}
 
 /*
 You’re going to store the gameboard as an array inside of a Gameboard object, so start there! 
